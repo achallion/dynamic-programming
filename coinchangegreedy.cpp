@@ -10,8 +10,10 @@ int coinchange(int *a, int n, int money)
     {
         int *it = upper_bound(a, a + n, money);
         it--;
-        money -= *it;
+        int ind = it - a;
+        money -= a[ind];
         count++;
+        cout << a[ind]  << " + " ;
     }
     return count;
 }
@@ -22,6 +24,6 @@ int main()
     cin >> n;
     int arr[] = {1, 2, 5, 10, 20, 50, 100, 200, 500, 2000};
     int s = sizeof(arr) / sizeof(int);
-    cout << coinchange(arr, s, n);
+    cout << coinchange(arr, s, n)<< "\n" ;
     return 0;
 }
