@@ -64,25 +64,60 @@ int orangesRotting(vector<vector<int>> &grid)
 {
     int r = grid.size();
     int c = grid[0].size();
-    int minute = 0;
+    int minute = -1;
+    queue<pair<int, int>> q;
     for (int i = 0; i < r; i++)
     {
         for (int j = 0; j < c; j++)
         {
             if (grid[i][j] == 2)
             {
-                minute = helper(grid, i, j);
-                continue;
+                q.push({i, j});
             }
         }
     }
+    q.push({-1, -1});
+    while (q.size() > 1)
+    {
+        auto f = q.front();
+        q.pop();
+        if (f.first == -1) // NULL
+        {
+            q.push(f);
+            minute++;
+            continue;
+        }
+        int i = f.first;
+        int j = f.second;
+        if (i != 0 && grid[i - 1][j] == 1)
+        {
+            q.push({i - 1, j});
+            grid[i - 1][j] = 2;
+        }
+        if (i != r - 1 && grid[i + 1][j] == 1)
+        {
+            q.push({i + 1, j});
+            grid[i + 1][j] = 2;
+        }
+        if (j != 0 && grid[i][j - 1] == 1)
+        {
+            q.push({i, j - 1});
+            grid[i][j - 1] = 2;
+        }
+        if (j != c - 1 && grid[i][j + 1] == 1)
+        {
+            q.push({i, j + 1});
+            grid[i][j + 1] = 2;
+        }
+    }
+
     if (allrotten(grid))
         return minute;
     else
         return -1;
 }
 
-    vector<vector<int>> generateMatrix(int n)
+vector<vector<int>> generateMatrix(int n)
 {
     vector<vector<int>> ans(n, vector<int>(n, -1));
     int r = ans.size();
@@ -98,7 +133,7 @@ int orangesRotting(vector<vector<int>> &grid)
         num++;
         if (dir == 1)
         {
-            if (j == c - 1 || ans[i][j+1] != -1)
+            if (j == c - 1 || ans[i][j + 1] != -1)
             {
                 dir = dir % 4 + 1;
                 i++;
@@ -107,9 +142,9 @@ int orangesRotting(vector<vector<int>> &grid)
             j++;
             continue;
         }
-        if (dir == 2 )
+        if (dir == 2)
         {
-            if (i == r - 1|| ans[i+1][j] != -1)
+            if (i == r - 1 || ans[i + 1][j] != -1)
             {
                 dir = dir % 4 + 1;
                 j--;
@@ -120,7 +155,7 @@ int orangesRotting(vector<vector<int>> &grid)
         }
         if (dir == 3)
         {
-            if (j == 0 || ans[i][j-1] != -1)
+            if (j == 0 || ans[i][j - 1] != -1)
             {
                 dir = dir % 4 + 1;
                 i--;
@@ -131,7 +166,7 @@ int orangesRotting(vector<vector<int>> &grid)
         }
         if (dir == 4)
         {
-            if (i == 0|| ans[i-1][j] != -1)
+            if (i == 0 || ans[i - 1][j] != -1)
             {
                 dir = dir % 4 + 1;
                 j++;
